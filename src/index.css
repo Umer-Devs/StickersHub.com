@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+@custom-variant max-428 (max-width: 428px);
+
+@theme {
+  --font-space-grotesk: "Inter", sans-serif;
+
+  --color-primary-blue: #213C51;
+  --color-primary-gray: #EDF1F8;
+}
+
+/* Base styles */
+@layer base {
+  body {
+    overflow-x: hidden !important;
+    font-family: var(--font-space-grotesk);
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl;
+  }
+
+  p {
+    @apply md:text-lg;
+  }
+}
+
+/* Custom components */
+@layer components {
+  .custom-padding {
+    @apply px-4 md:px-9 lg:px-16 xl:px-20;
+  }
+
+  .floating-element {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .bg-hero {
+    background: linear-gradient(90deg, rgba(255, 229, 229, 1) 0%, rgba(245, 255, 254, 1) 22%, rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 1) 100%);
+  }
+
+  .bg-one {
+    background: linear-gradient(90deg, rgba(251, 238, 238, 1) 0%, rgba(247, 255, 254, 1) 100%);
+  }
+
+  .btn-bg {
+    background: linear-gradient(90deg, rgba(237, 85, 59, 1) 0%, rgba(255, 135, 114, 1) 100%);
+  }
+
+  .bg-two {
+    background: linear-gradient(90deg, rgba(251, 238, 238, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(251, 238, 238, 1) 100%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", sans-serif !important;
+  }
+
+  .border-gradient {
+    border: 3px solid transparent;
+    border-radius: calc(infinity * 1px);
+    background:
+      linear-gradient(white, white) padding-box,
+      linear-gradient(90deg, #ED553B, #FF8772) border-box;
+  }
+}
+
+/* Utilities */
+@layer utilities {
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-15px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+}
