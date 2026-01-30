@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, HeroSection, CtaOne } from '../componenets'
+import { Header, HeroSection, CtaOne, Category, HowDoesItWork, VideoSection, Testimonials, Footer } from '../componenets'
 
 const Home = () => {
     return (
@@ -7,9 +7,19 @@ const Home = () => {
             <Header />
             <HeroSection />
             <CtaOne />
+            <Category />
+            <HowDoesItWork />
+            <VideoSection />
+            <Testimonials />
+            <Footer />
         </>
     )
 }
+
+
+
+
+
 
 
 export default Home
