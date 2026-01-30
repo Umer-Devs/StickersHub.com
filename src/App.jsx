@@ -1,13 +1,20 @@
-import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
-import Router from './Router/Router'
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './Router/Router';
+import { CarProvider } from './context/CarContext';
+import { AuthProvider } from './context/AuthContext';
+import './index.css';
 
-const App = () => {
+function App() {
   return (
     <BrowserRouter>
-      <Router />
+      <AuthProvider>
+        <CarProvider>
+          <Router />
+        </CarProvider>
+      </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

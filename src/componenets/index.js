@@ -6,6 +6,10 @@ export { default as HowDoesItWork } from './Home/HowDoesItWork';
 export { default as Testimonials } from './Testimonials';
 export { default as VideoSection } from './Home/VideoSection';
 export { default as Footer } from './Footer';
+export { default as CarCard } from './CarCard';
+export { default as FeaturedCars } from './FeaturedCars';
+
+
 
 
 

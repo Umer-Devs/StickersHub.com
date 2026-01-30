@@ -2,6 +2,7 @@ import React from 'react';
 import { HeroImgOne } from '../../assets';
 import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
     const carMakes = ["Toyota", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Honda", "Ford", "Nissan", "Hyundai", "Kia", "Tesla", "Porsche", "Lexus", "Land Rover", "Volvo"];
@@ -33,7 +34,7 @@ const HeroSection = () => {
                     >
                         <h1 className="text-white font-black leading-[1.05] drop-shadow-2xl text-5xl md:text-6xl lg:text-8xl">
                             You choose your car online.<br />
-                            <span className="text-blue-500">We inspect it and deliver it.</span>
+                            <span className="text-theme-blue">We inspect it and deliver it.</span>
                         </h1>
                     </motion.div>
 
@@ -124,7 +125,7 @@ const HeroSection = () => {
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
                             </div>
-                           
+
 
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mileage From</label>
@@ -183,9 +184,11 @@ const HeroSection = () => {
                             </div>
 
                             <div className="flex items-end">
-                                <button className="w-full py-4 bg-primary-blue hover:bg-blue-600 text-white rounded-2xl font-black text-lg tracking-widest shadow-xl shadow-blue-500/20 transition-all active:scale-[0.98] uppercase">
-                                    Show Offers
-                                </button>
+                                <Link to="/explore" className="w-full">
+                                    <button className="w-full py-4 bg-theme-blue hover:bg-theme-blue/90 text-white rounded-2xl font-black text-lg tracking-widest shadow-xl shadow-theme-blue/20 transition-all active:scale-[0.98] uppercase">
+                                        Show Offers
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>
@@ -197,10 +200,12 @@ const HeroSection = () => {
                         transition={{ delay: 0.6 }}
                         className="flex flex-col sm:flex-row items-center gap-8"
                     >
-                        <button className="flex items-center gap-4 bg-white/10 backdrop-blur-lg border border-white/20 px-10 py-5 rounded-full text-white font-black hover:bg-white/20 transition-all group">
-                            <span>Explore Market</span>
-                            <Search size={20} className="group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        <Link to="/explore">
+                            <button className="flex items-center gap-4 bg-white/10 backdrop-blur-lg border border-white/20 px-10 py-5 rounded-full text-white font-black hover:bg-white/20 transition-all group">
+                                <span>Explore Market</span>
+                                <Search size={20} className="group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </Link>
                         <div className="flex items-center gap-4">
                             <div className="flex -space-x-3">
                                 {[1, 2, 3, 4].map((i) => (
@@ -211,7 +216,7 @@ const HeroSection = () => {
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-white font-black text-lg leading-tight">1.2M+ Real Offers</span>
-                                <span className="text-white/40 text-[10px] uppercase font-bold tracking-[0.2em]">Verified Listings</span>
+                                <span className="text-theme-blue text-[10px] uppercase font-bold tracking-[0.2em]">Verified Listings</span>
                             </div>
                         </div>
                     </motion.div>

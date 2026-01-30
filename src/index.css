@@ -9,6 +9,19 @@
 
   --color-primary-blue: #213C51;
   --color-primary-gray: #EDF1F8;
+  --color-theme-blue: #55A2C2;
+}
+
+.bg-theme-blue {
+    background-color: #55A2C2;
+}
+
+.text-theme-blue {
+    color: #55A2C2;
+}
+
+.border-theme-blue {
+    border-color: #55A2C2;
 }
 
 /* Base styles */
