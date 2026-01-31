@@ -25,10 +25,12 @@ const CarDetail = () => {
     const { id } = useParams();
     const { cars } = useCars();
     const [car, setCar] = useState(null);
+    const [activeImage, setActiveImage] = useState(0);
 
     useEffect(() => {
         const foundCar = cars.find(c => c.id === parseInt(id));
         setCar(foundCar);
+        setActiveImage(0); // Reset image index on car change
         window.scrollTo(0, 0);
     }, [id, cars]);
 
@@ -49,12 +51,18 @@ const CarDetail = () => {
         );
     }
 
+    const images = (car.images && car.images.length > 0)
+        ? car.images
+        : [car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1200"];
+
+    const carOptions = car.options || [];
+
     const specItems = [
-        { label: "Price", value: `${car.price.toLocaleString()} EUR`, icon: <Star size={16} /> },
+        { label: "Price", value: `${(car.price || 0).toLocaleString()} EUR`, icon: <Star size={16} /> },
         { label: "Make", value: car.make, icon: <Settings size={16} /> },
         { label: "Model", value: car.model, icon: <Zap size={16} /> },
         { label: "Year", value: car.year, icon: <Calendar size={16} /> },
-        { label: "Mileage", value: `${car.mileage.toLocaleString()} km`, icon: <Gauge size={16} /> },
+        { label: "Mileage", value: `${(car.mileage || 0).toLocaleString()} km`, icon: <Gauge size={16} /> },
         { label: "Fuel Type", value: car.fuelType, icon: <Fuel size={16} /> },
         { label: "Transmission", value: car.transmission, icon: <Settings size={16} /> },
         { label: "Body Type", value: car.bodyType, icon: <Palette size={16} /> },
@@ -88,8 +96,8 @@ const CarDetail = () => {
 
                                     {/* Dynamic Availability Status */}
                                     <div className={`flex items-center gap-2 px-3 py-1 rounded-lg border ${car.isAvailable
-                                            ? 'bg-green-50 border-green-100'
-                                            : 'bg-red-50 border-red-100'
+                                        ? 'bg-green-50 border-green-100'
+                                        : 'bg-red-50 border-red-100'
                                         }`}>
                                         <div className={`w-1.5 h-1.5 rounded-full ${car.isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
                                         <span className={`text-[10px] font-black uppercase tracking-widest ${car.isAvailable ? 'text-green-600' : 'text-red-600'}`}>
@@ -108,32 +116,49 @@ const CarDetail = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
                         {/* Left Column: Media & Description */}
-                        <div className="lg:col-span-7 space-y-12">
-                            {/* Main Image */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="aspect-[16/10] bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 group relative"
-                            >
-                                <img
-                                    src={car.image}
-                                    alt={`${car.make} ${car.model}`}
-                                    className={`w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 ${!car.isAvailable ? 'grayscale opacity-70' : ''}`}
-                                />
-                                {!car.isAvailable && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-                                        <div className="px-10 py-5 bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col items-center gap-2">
-                                            <AlertCircle size={32} className="text-red-500" />
-                                            <span className="text-2xl font-black text-primary-blue uppercase tracking-tighter">Sold Out</span>
+                        <div className="lg:col-span-7 space-y-8">
+                            {/* Main Image View */}
+                            <div className="space-y-6">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="aspect-[16/10] bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 group relative"
+                                >
+                                    <img
+                                        src={images[activeImage]}
+                                        alt={`${car.make} ${car.model}`}
+                                        className={`w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 ${!car.isAvailable ? 'grayscale opacity-70' : ''}`}
+                                    />
+                                    {!car.isAvailable && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+                                            <div className="px-10 py-5 bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col items-center gap-2">
+                                                <AlertCircle size={32} className="text-red-500" />
+                                                <span className="text-2xl font-black text-primary-blue uppercase tracking-tighter">Sold Out</span>
+                                            </div>
                                         </div>
+                                    )}
+                                    <div className="absolute top-6 right-6">
+                                        <button className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl text-white hover:bg-white hover:text-primary-blue transition-all">
+                                            <Copy size={20} />
+                                        </button>
+                                    </div>
+                                </motion.div>
+
+                                {/* Thumbnail Gallery */}
+                                {images.length > 1 && (
+                                    <div className="grid grid-cols-5 gap-4">
+                                        {images.map((img, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => setActiveImage(idx)}
+                                                className={`aspect-square rounded-2xl overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-theme-blue scale-95 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                                            >
+                                                <img src={img} alt={`View ${idx + 1}`} className="w-full h-full object-cover" />
+                                            </button>
+                                        ))}
                                     </div>
                                 )}
-                                <div className="absolute top-6 right-6">
-                                    <button className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl text-white hover:bg-white hover:text-primary-blue transition-all">
-                                        <Copy size={20} />
-                                    </button>
-                                </div>
-                            </motion.div>
+                            </div>
 
                             {/* Description Section */}
                             <motion.div
@@ -157,7 +182,7 @@ const CarDetail = () => {
 
                             {/* Options Highlights */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                {car.options.slice(0, 4).map((option, idx) => (
+                                {carOptions.slice(0, 4).map((option, idx) => (
                                     <div key={idx} className="p-6 bg-white border border-gray-100 rounded-3xl flex flex-col items-center justify-center gap-3 text-center hover:shadow-xl hover:shadow-primary-blue/5 transition-all cursor-default">
                                         <div className="w-10 h-10 rounded-full bg-theme-blue/5 flex items-center justify-center">
                                             <CheckCircle2 size={18} className="text-theme-blue" />
@@ -193,7 +218,7 @@ const CarDetail = () => {
                             <div className="bg-primary-blue rounded-[2.5rem] p-8 text-white space-y-6 shadow-2xl shadow-primary-blue/20">
                                 <h3 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">Full Equipment List</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
-                                    {car.options.map((option, index) => (
+                                    {carOptions.map((option, index) => (
                                         <div key={index} className="flex items-center gap-3 group">
                                             <CheckCircle2 size={14} className="text-theme-blue group-hover:scale-110 transition-transform" />
                                             <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">{option}</span>
@@ -207,8 +232,8 @@ const CarDetail = () => {
                                 <button
                                     disabled={!car.isAvailable}
                                     className={`w-full py-6 rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-xl transition-all flex items-center justify-center gap-3 text-sm ${car.isAvailable
-                                            ? 'bg-[#FFC107] hover:bg-[#FFB300] text-primary-blue shadow-yellow-500/20 hover:scale-[1.02] active:scale-[0.98]'
-                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed grayscale shadow-none'
+                                        ? 'bg-[#FFC107] hover:bg-[#FFB300] text-primary-blue shadow-yellow-500/20 hover:scale-[1.02] active:scale-[0.98]'
+                                        : 'bg-gray-200 text-gray-400 cursor-not-allowed grayscale shadow-none'
                                         }`}
                                 >
                                     {car.isAvailable ? <Phone size={18} /> : <AlertCircle size={18} />}

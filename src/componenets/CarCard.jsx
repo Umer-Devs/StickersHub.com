@@ -23,7 +23,7 @@ const CarCard = ({ car }) => {
             {/* Image Section */}
             <Link to={`/car/${car.id}`} className="block relative h-64 overflow-hidden">
                 <img
-                    src={car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800"}
+                    src={car.images && car.images.length > 0 ? car.images[0] : (car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800")}
                     alt={`${car.make} ${car.model}`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -31,8 +31,8 @@ const CarCard = ({ car }) => {
                 {/* Status Badge */}
                 <div className="absolute top-4 left-4 z-10">
                     <div className={`px-4 py-2 rounded-full backdrop-blur-md border flex items-center gap-2 shadow-lg ${car.isAvailable
-                            ? 'bg-green-500/10 border-green-500/20 text-green-500'
-                            : 'bg-red-500/10 border-red-500/20 text-red-500'
+                        ? 'bg-green-500/10 border-green-500/20 text-green-500'
+                        : 'bg-red-500/10 border-red-500/20 text-red-500'
                         }`}>
                         <div className={`w-1.5 h-1.5 rounded-full ${car.isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
                         <span className="text-[10px] font-black uppercase tracking-widest">

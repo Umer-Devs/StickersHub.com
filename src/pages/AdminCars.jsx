@@ -43,7 +43,7 @@ const AdminCars = () => {
         trim: '',
         description: '',
         isAvailable: true,
-        image: '',
+        images: [],
         options: []
     });
 
@@ -60,7 +60,7 @@ const AdminCars = () => {
                 make: '', model: '', year: 2024, price: '', mileage: '',
                 fuelType: 'Petrol', transmission: 'Automatic', bodyType: 'Sedan',
                 country: 'Portugal', city: 'Lisbon', color: '', power: '',
-                trim: '', description: '', isAvailable: true, image: '', options: []
+                trim: '', description: '', isAvailable: true, images: [], options: []
             });
         }
         setIsModalOpen(true);
@@ -76,6 +76,33 @@ const AdminCars = () => {
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        const uploadPromises = files.map(file => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(uploadPromises).then(base64Images => {
+            setFormData(prev => ({
+                ...prev,
+                images: [...(prev.images || []), ...base64Images]
+            }));
+        });
+    };
+
+    const removeImage = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index)
         }));
     };
 
@@ -151,7 +178,7 @@ const AdminCars = () => {
                                             <td className="px-8 py-6">
                                                 <div className="flex items-center gap-4">
                                                     <div className="w-16 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                                                        <img src={car.image} alt={car.make} className="w-full h-full object-cover" />
+                                                        <img src={car.images && car.images.length > 0 ? car.images[0] : car.image} alt={car.make} className="w-full h-full object-cover" />
                                                     </div>
                                                     <div>
                                                         <p className="font-black text-primary-blue uppercase text-sm leading-tight">{car.make} {car.model}</p>
@@ -167,8 +194,8 @@ const AdminCars = () => {
                                             </td>
                                             <td className="px-8 py-6">
                                                 <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border ${car.isAvailable
-                                                        ? 'bg-green-50 border-green-100 text-green-600'
-                                                        : 'bg-red-50 border-red-100 text-red-600'
+                                                    ? 'bg-green-50 border-green-100 text-green-600'
+                                                    : 'bg-red-50 border-red-100 text-red-600'
                                                     }`}>
                                                     <div className={`w-1.5 h-1.5 rounded-full ${car.isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
                                                     <span className="text-[10px] font-black uppercase tracking-widest">
@@ -349,9 +376,49 @@ const AdminCars = () => {
                                         <h3 className="text-xs font-black text-primary-blue uppercase tracking-widest">Media & Location</h3>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Image URL</label>
-                                            <input required name="image" value={formData.image} onChange={handleInputChange} className="w-full p-4 bg-gray-50 rounded-2xl border border-transparent focus:border-theme-blue/30 focus:bg-white outline-none transition-all font-bold text-sm text-theme-blue underline" placeholder="https://..." />
+                                        <div className="md:col-span-2 space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Vehicle Images</label>
+                                                <label className="cursor-pointer bg-theme-blue/10 hover:bg-theme-blue/20 text-theme-blue px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
+                                                    <Plus size={14} className="inline mr-1" />
+                                                    Add from PC
+                                                    <input
+                                                        type="file"
+                                                        multiple
+                                                        accept="image/*"
+                                                        className="hidden"
+                                                        onChange={handleImageUpload}
+                                                    />
+                                                </label>
+                                            </div>
+
+                                            {/* Image Preview Grid */}
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                                                {(formData.images || []).map((img, idx) => (
+                                                    <div key={idx} className="relative aspect-video rounded-xl overflow-hidden group border border-gray-100">
+                                                        <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeImage(idx)}
+                                                            className="absolute top-1 right-1 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-all shadow-lg"
+                                                            title="Remove"
+                                                        >
+                                                            <X size={12} />
+                                                        </button>
+                                                        {idx === 0 && (
+                                                            <div className="absolute bottom-0 left-0 right-0 bg-theme-blue text-white text-[8px] font-black uppercase py-1 text-center">
+                                                                Main
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                                {(!formData.images || formData.images.length === 0) && (
+                                                    <div className="col-span-full py-12 border-2 border-dashed border-gray-100 rounded-[2rem] flex flex-col items-center justify-center text-gray-300 gap-2">
+                                                        <ImageIcon size={32} />
+                                                        <span className="text-[10px] font-black uppercase tracking-widest">No images uploaded yet</span>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="space-y-2">
@@ -378,8 +445,8 @@ const AdminCars = () => {
                                                 key={option}
                                                 onClick={() => handleOptionToggle(option)}
                                                 className={`p-3 rounded-xl border text-[10px] font-black uppercase tracking-tight text-center cursor-pointer transition-all ${formData.options.includes(option)
-                                                        ? 'bg-theme-blue border-theme-blue text-white shadow-lg shadow-theme-blue/20'
-                                                        : 'bg-white border-gray-100 text-gray-400 hover:border-theme-blue/30 hover:text-primary-blue'
+                                                    ? 'bg-theme-blue border-theme-blue text-white shadow-lg shadow-theme-blue/20'
+                                                    : 'bg-white border-gray-100 text-gray-400 hover:border-theme-blue/30 hover:text-primary-blue'
                                                     }`}
                                             >
                                                 {option}

@@ -8,6 +8,8 @@ export { default as VideoSection } from './Home/VideoSection';
 export { default as Footer } from './Footer';
 export { default as CarCard } from './CarCard';
 export { default as FeaturedCars } from './FeaturedCars';
+export { default as InquiryForm } from './Inquiry/InquiryForm';
+export { default as ContactForm } from './Contact/ContactForm';
 
 
 
