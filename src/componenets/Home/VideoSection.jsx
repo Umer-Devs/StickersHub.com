@@ -14,7 +14,7 @@ const VideoSection = () => {
                     className="relative max-w-6xl mx-auto group cursor-pointer"
                 >
                     {/* Video Thumbnail / Illustration Background */}
-                    <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(33,60,81,0.3)] bg-[#213c51]">
+                    <div className="relative aspect-video rounded-lg overflow-hidden shadow-[0_40px_100px_-20px_rgba(33,60,81,0.3)] bg-[#213c51]">
                         <video
                             src="https://carvago.com/_next/static/media/howItWorksPreviewBig.c8514def.mp4"
                             autoPlay
@@ -38,19 +38,19 @@ const VideoSection = () => {
                                 <div className="absolute inset-0 animate-ping rounded-full bg-red-500/30" />
                                 <div className="absolute inset-0 animate-ping rounded-full bg-red-500/20 delay-300" />
 
-                                <div className="w-20 h-20 md:w-24 md:h-24 bg-red-500 rounded-full flex items-center justify-center shadow-2xl relative z-10 transition-colors group-hover:bg-white">
-                                    <Play fill="red" size={32} className="text-white ml-2" />
+                                <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full flex items-center justify-center shadow-2xl relative z-10 transition-colors group-hover:bg-white">
+                                    <Play fill="red" size={32} className="text-white " />
                                 </div>
                             </motion.div>
-                            <span className="text-white font-black text-xl md:text-2xl tracking-tight drop-shadow-md">
+                            {/* <span className="text-white font-black text-xl md:text-2xl    drop-shadow-md">
                                 Play video
-                            </span>
+                            </span> */}
                         </div>
 
-                        
+
                     </div>
 
-                   
+
                 </motion.div>
             </div>
         </section>

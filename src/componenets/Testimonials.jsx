@@ -111,7 +111,7 @@ const Testimonials = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            className="min-w-[300px] md:min-w-[380px] bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col snap-start"
+                            className="min-w-[300px] md:min-w-[380px] bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 flex flex-col snap-start"
                         >
                             {/* Image Header */}
                             <div className="h-52 w-full overflow-hidden">
@@ -129,7 +129,7 @@ const Testimonials = () => {
                                         Verified Review
                                     </span>
                                     <div className="text-right">
-                                        <span className="block text-[10px] text-gray-400 font-bold uppercase tracking-tighter leading-none">Source</span>
+                                        <span className="block text-[10px] text-gray-400 font-bold uppercase   er leading-none">Source</span>
                                         <span className="text-sm font-black text-gray-700">{t.source}</span>
                                     </div>
                                 </div>

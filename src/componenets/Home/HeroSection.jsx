@@ -1,15 +1,87 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { HeroImgOne } from '../../assets';
 import { ChevronDown, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCars } from '../../context/CarContext';
 
 const HeroSection = () => {
+    const navigate = useNavigate();
+    const { cars } = useCars();
+
+    // Get unique countries from cars
+    const uniqueCountries = useMemo(() => {
+        return [...new Set(cars.map(car => car.country).filter(Boolean))].sort();
+    }, [cars]);
+
+
+    const [filters, setFilters] = useState({
+        country: '',
+        make: '',
+        model: '', // Using 'model' state for Year as per previous ExploreCar logic (Wait, ExploreCar mapped 'model' filter to car.year. Let's align.)
+        // Actually, looking at ExploreCar:
+        // (filters.model === '' || car.year.toString() === filters.model)
+        // So 'model' in filters actually filters by Year? That's confusing naming in ExploreCar but I must match it.
+        // Wait, 'HeroSection' has "Car Modal" which seems to be years "2001"..."2026".
+        // And 'HeroSection' ALSO has "Year From" / "Year To".
+        // Let's look at ExploreCar Again.
+        // ExploreCar logic:
+        // (filters.make === '' || car.make === filters.make) &&
+        // (filters.model === '' || car.year.toString() === filters.model) &&
+        // ...
+        // (filters.yearFrom === '' || car.year >= parseInt(filters.yearFrom))
+
+        // It seems 'model' filter in ExploreCar is strictly for Year equality?
+        // Let's check ExploreCar select options:
+        // const carModals = ["2001" ... "2026"];
+        // <select name="model" ...> {carModals.map...} </select>
+        // label says "Car Model (Year)".
+
+        // Okay, so in ExploreCar, "model" is treating "Year".
+        // BUT HeroSection has distinct "Car Modal" (sic, probably Model) AND "Year From/To".
+        // "Car Modal" in HeroSection currently maps to a list of years.
+
+        // To avoid confusion and make it work:
+        // User wants "sahi hai".
+        // I should probably map the "Car Model" field to actual car models if available, or just map it to what ExploreCar expects.
+        // Since ExploreCar expects "model" to be a year string, I will stick to that for now to avoid breaking existing logic, 
+        // OR I can fix ExploreCar to treat `model` as `model`.
+
+        // OPTION B: Let's assume the user meant "Car Model" to be actual models (like M4, Corolla).
+        // BUT ExploreCar uses `carModals` list which are YEARS.
+        // I will follow existing ExploreCar pattern to ensure compatibility.
+
+        priceFrom: '',
+        priceTo: '',
+        yearFrom: '',
+        yearTo: '',
+        mileageFrom: '',
+        mileageTo: '',
+        fuelType: '',
+        transmission: '',
+        bodyType: '',
+    });
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSearch = () => {
+        const queryParams = new URLSearchParams();
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value) queryParams.append(key, value);
+        });
+        navigate(`/explore?${queryParams.toString()}`);
+    };
+
     const carMakes = ["Toyota", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Honda", "Ford", "Nissan", "Hyundai", "Kia", "Tesla", "Porsche", "Lexus", "Land Rover", "Volvo"];
+    // HeroSection had "Car Modal" mapped to years. I will keep it consistent with ExploreCar for now, but label it "Car Model (Year)" to match ExploreCar's label or just keep it "Car Model" but use years if that's what the system does.
+    // actually, let's look at the arrays.
     const carModals = ["2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
-    const prices = ["5,000 €", "10,000 €", "15,000 €", "20,000 €", "30,000 €", "40,000 €", "50,000 €", "75,000 €", "100,000 €"];
+    const prices = [5000, 10000, 15000, 20000, 30000, 40000, 50000, 75000, 100000];
     const years = Array.from({ length: 16 }, (_, i) => 2025 - i);
-    const mileages = ["5,000", "10,000", "20,000", "50,000", "100,000", "150,000", "200,000"];
+    const mileages = [5000, 10000, 20000, 50000, 100000, 150000, 200000];
     const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "LPG", "Hydrogen"];
     const transmissions = ["Automatic", "Manual", "Semi-Automatic"];
     const bodyTypes = ["Compact", "Convertible", "Coupe", "SUV", "Sedan", "Station Wagon", "Van", "Transporter"];
@@ -32,7 +104,7 @@ const HeroSection = () => {
                         transition={{ duration: 0.8 }}
                         className="max-w-4xl"
                     >
-                        <h1 className="text-white font-black leading-[1.05] drop-shadow-2xl text-5xl md:text-6xl lg:text-8xl">
+                        <h1 className="text-white font-black leading-[1.05] drop-shadow-2xl text-5xl md:text-6xl lg:text-7xl ">
                             You choose your car online.<br />
                             <span className="text-theme-blue">We inspect it and deliver it.</span>
                         </h1>
@@ -43,39 +115,52 @@ const HeroSection = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
-                        className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] p-8 md:p-10 w-full border border-white/20"
+                        className="bg-white/95 backdrop-blur-md rounded-lg shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] p-8 md:p-10 w-full border border-white/20"
                     >
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {/* Row 1 */}
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Country</label>
                                 <div className="relative group">
-                                    <div className="flex items-center gap-3 w-full p-4 bg-gray-50 border border-transparent rounded-2xl group-hover:bg-white group-hover:border-red-500/30 transition-all cursor-pointer shadow-sm">
-                                        <div className="w-6 h-6 rounded-full overflow-hidden border border-gray-200">
-                                            <img src="https://flagcdn.com/pt.svg" alt="Portugal" className="w-full h-full object-cover" />
-                                        </div>
-                                        <span className="font-bold text-primary-blue">Portugal</span>
-                                        <ChevronDown size={18} className="ml-auto text-gray-400 group-hover:text-red-500" />
-                                    </div>
+                                    <select
+                                        name="country"
+                                        value={filters.country}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
+                                        <option value="">All Countries</option>
+                                        {uniqueCountries.map(c => <option key={c} value={c}>{c}</option>)}
+                                    </select>
+                                    <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Make</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="make"
+                                        value={filters.make}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any Make</option>
-                                        {carMakes.map(make => <option key={make} value={make.toLowerCase()}>{make}</option>)}
+                                        {carMakes.map(make => <option key={make} value={make}>{make}</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Modal</label>
+                                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Model (Year)</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
-                                        <option value="">Any Modal</option>
-                                        {carModals.map(make => <option key={make} value={make.toLowerCase()}>{make}</option>)}
+                                    <select
+                                        name="model"
+                                        value={filters.model}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
+                                        <option value="">Any Model</option>
+                                        {carModals.map(year => <option key={year} value={year}>{year}</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
@@ -84,9 +169,14 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Price From</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="priceFrom"
+                                        value={filters.priceFrom}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">From</option>
-                                        {prices.map(p => <option key={p} value={p}>{p}</option>)}
+                                        {prices.map(p => <option key={p} value={p}>{p.toLocaleString()} €</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
@@ -95,9 +185,14 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Price To</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="priceTo"
+                                        value={filters.priceTo}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">To</option>
-                                        {prices.map(p => <option key={p} value={p}>{p}</option>)}
+                                        {prices.map(p => <option key={p} value={p}>{p.toLocaleString()} €</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
@@ -107,7 +202,12 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Year From</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="yearFrom"
+                                        value={filters.yearFrom}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any Year</option>
                                         {years.map(y => <option key={y} value={y}>{y}</option>)}
                                     </select>
@@ -118,7 +218,12 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Year To</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="yearTo"
+                                        value={filters.yearTo}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any Year</option>
                                         {years.map(y => <option key={y} value={y}>{y}</option>)}
                                     </select>
@@ -130,9 +235,14 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mileage From</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="mileageFrom"
+                                        value={filters.mileageFrom}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any</option>
-                                        {mileages.map(m => <option key={m} value={m}>{m} km</option>)}
+                                        {mileages.map(m => <option key={m} value={m}>{m.toLocaleString()} km</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
@@ -141,9 +251,14 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mileage To</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="mileageTo"
+                                        value={filters.mileageTo}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any</option>
-                                        {mileages.map(m => <option key={m} value={m}>{m} km</option>)}
+                                        {mileages.map(m => <option key={m} value={m}>{m.toLocaleString()} km</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>
@@ -153,7 +268,12 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Fuel Type</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="fuelType"
+                                        value={filters.fuelType}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any Fuel</option>
                                         {fuelTypes.map(ft => <option key={ft} value={ft}>{ft}</option>)}
                                     </select>
@@ -164,7 +284,12 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Transmission</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="transmission"
+                                        value={filters.transmission}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any Transmission</option>
                                         {transmissions.map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
@@ -175,7 +300,12 @@ const HeroSection = () => {
                             <div className="space-y-2">
                                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Body Type</label>
                                 <div className="relative group">
-                                    <select className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm">
+                                    <select
+                                        name="bodyType"
+                                        value={filters.bodyType}
+                                        onChange={handleFilterChange}
+                                        className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
+                                    >
                                         <option value="">Any Body</option>
                                         {bodyTypes.map(bt => <option key={bt} value={bt}>{bt}</option>)}
                                     </select>
@@ -184,11 +314,12 @@ const HeroSection = () => {
                             </div>
 
                             <div className="flex items-end">
-                                <Link to="/explore" className="w-full">
-                                    <button className="w-full py-4 bg-theme-blue hover:bg-theme-blue/90 text-white rounded-2xl font-black text-lg tracking-widest shadow-xl shadow-theme-blue/20 transition-all active:scale-[0.98] uppercase">
-                                        Show Offers
-                                    </button>
-                                </Link>
+                                <button
+                                    onClick={handleSearch}
+                                    className="w-full py-4 bg-theme-blue hover:bg-theme-blue/90 text-white rounded-lg font-black text-lg tracking-widest shadow-xl shadow-theme-blue/20 transition-all active:scale-[0.98] uppercase"
+                                >
+                                    Show Offers
+                                </button>
                             </div>
                         </div>
                     </motion.div>

@@ -1,24 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { How1, How2, How3 } from '../../assets';
 
 const steps = [
     {
         number: "01.",
         title: "Choose anywhere in Europe",
         description: "No more compromises! With us, you have an unrivaled selection of cars in one place.",
-        image: "https://img.freepik.com/free-vector/travel-concept-illustration_114360-1247.jpg?t=st=1710427000&exp=1710430600&hmac=placeholder1" // Illustrative placeholder
+        image: How1 
     },
     {
         number: "02.",
         title: "We'll inspect the car closely",
         description: "A certified mechanic will thoroughly inspect your car. You will decide according to the result after.",
-        image: "https://img.freepik.com/free-vector/auto-service-concept-illustration_114360-2815.jpg?t=st=1710427000&exp=1710430600&hmac=placeholder2" // Illustrative placeholder
+        image: How2 
     },
     {
         number: "03.",
         title: "We'll deliver it to your home",
         description: "We arrange all the paperwork, registration and delivery. All you need to do is enjoy your new car.",
-        image: "https://img.freepik.com/free-vector/delivery-service-concept-illustration_114360-143.jpg?t=st=1710427000&exp=1710430600&hmac=placeholder3" // Illustrative placeholder
+        image: How3 
     }
 ];
 
@@ -51,13 +52,13 @@ const HowDoesItWork = () => {
                             className="flex flex-col items-start"
                         >
                             {/* Illustration Placeholder */}
-                            <div className="w-full aspect-video mb-8 overflow-hidden rounded-2xl flex items-center justify-center bg-gray-50">
+                            <div className="w-full aspect-video mb-8 overflow-hidden rounded-lg flex items-center justify-center bg-gray-50">
                                 {/* Using lucide icons as placeholders for now since direct illustration links can be finicky */}
                                 <div className="relative w-full h-full flex items-center justify-center text-primary-blue/20">
                                     <img
-                                        src={`https://api.dicebear.com/7.x/shapes/svg?seed=${step.title}&backgroundColor=f8fafc`}
+                                        src={step.image}
                                         alt="Illustration"
-                                        className="w-40 h-40 opacity-80"
+                                        className="w-full h-full opacity-80"
                                     />
                                 </div>
                             </div>
@@ -85,7 +86,7 @@ const HowDoesItWork = () => {
                     viewport={{ once: true }}
                     className="mt-20 text-center"
                 >
-                    <button className="px-12 py-5 bg-[#2d3e9d] text-white font-black rounded-xl hover:bg-[#1a2b3b] transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20 text-lg uppercase tracking-wider">
+                    <button className="px-12 py-5 bg-[#2d3e9d] text-white font-black rounded-lg hover:bg-[#1a2b3b] transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20 text-lg uppercase tracking-wider">
                         Want to know more?
                     </button>
                 </motion.div>

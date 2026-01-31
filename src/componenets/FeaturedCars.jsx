@@ -29,7 +29,7 @@ const FeaturedCars = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="text-4xl md:text-5xl font-black text-primary-blue uppercase tracking-tight"
+                            className="text-4xl md:text-5xl font-black text-primary-blue uppercase   "
                         >
                             Featured <span className="text-theme-blue">Vehicles</span>
                         </motion.h2>
@@ -49,7 +49,7 @@ const FeaturedCars = () => {
                     </motion.div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
                     {featuredCars.map((car) => (
                         <CarCard key={car.id} car={car} />
                     ))}
@@ -57,7 +57,7 @@ const FeaturedCars = () => {
 
                 <div className="mt-16 flex justify-center md:hidden">
                     <Link to="/explore" className="w-full">
-                        <button className="w-full py-5 bg-primary-blue text-white rounded-2xl font-black uppercase tracking-widest hover:bg-theme-blue transition-all shadow-xl shadow-blue-500/10 active:scale-[0.98]">
+                        <button className="w-full py-5 bg-primary-blue text-white rounded-lg font-black uppercase tracking-widest hover:bg-theme-blue transition-all shadow-xl shadow-blue-500/10 active:scale-[0.98]">
                             View All Cars
                         </button>
                     </Link>

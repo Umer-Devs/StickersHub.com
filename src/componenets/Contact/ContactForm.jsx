@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, User, Mail, MessageSquare, Tag } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -22,7 +24,17 @@ const ContactForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Contact form submitted:', formData);
-        alert('Thank you for your message! Our team will contact you shortly.');
+        toast.success('Thank you for your message! Our team will contact you shortly.', {
+            duration: 5000,
+            position: 'top-right',
+        });
+        setFormData({
+            fullName: '',
+            email: '',
+            subject: '',
+            message: '',
+            agreement: false
+        });
     };
 
     return (
@@ -30,7 +42,7 @@ const ContactForm = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-[2.5rem] shadow-2xl p-8 md:p-12 border border-blue-50/50"
+            className="bg-white rounded-lg shadow-2xl p-8 md:p-12 border border-blue-50/50"
         >
             <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-6">
@@ -48,7 +60,7 @@ const ContactForm = () => {
                                 value={formData.fullName}
                                 onChange={handleChange}
                                 placeholder="John Doe"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -67,7 +79,7 @@ const ContactForm = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="john@example.com"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -84,7 +96,7 @@ const ContactForm = () => {
                                 required
                                 value={formData.subject}
                                 onChange={handleChange}
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             >
                                 <option value="">Select Subject</option>
                                 <option value="general">General Inquiry</option>
@@ -109,7 +121,7 @@ const ContactForm = () => {
                                 value={formData.message}
                                 onChange={handleChange}
                                 placeholder="How can we help you today?"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm resize-none"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm resize-none"
                             ></textarea>
                         </div>
                     </div>
@@ -134,7 +146,7 @@ const ContactForm = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full py-5 bg-theme-blue hover:bg-primary-blue text-white rounded-2xl font-black text-lg tracking-widest shadow-xl shadow-theme-blue/20 transition-all active:scale-[0.98] uppercase flex items-center justify-center gap-3 group"
+                    className="w-full py-5 bg-theme-blue hover:bg-primary-blue text-white rounded-lg font-black text-lg tracking-widest shadow-xl shadow-theme-blue/20 transition-all active:scale-[0.98] uppercase flex items-center justify-center gap-3 group"
                 >
                     Send Message
                     <Send size={20} className="group-hover:translate-x-1 transition-transform" />

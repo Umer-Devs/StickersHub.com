@@ -10,6 +10,8 @@ export { default as CarCard } from './CarCard';
 export { default as FeaturedCars } from './FeaturedCars';
 export { default as InquiryForm } from './Inquiry/InquiryForm';
 export { default as ContactForm } from './Contact/ContactForm';
+export { default as ScrollToTop } from './ScrollToTop';
+export { default as LenisProvider } from './LenisProvider';
 
 
 

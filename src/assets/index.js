@@ -1,1 +1,20 @@
-export {default as HeroImgOne} from './Home/HeroImgOne.jpg'
+export {default as HeroImgOne} from './Home/HeroImgOne.jpg';
+export {default as logo1} from './Home/logo1.png';
+export {default as logo2} from './Home/logo2.png';
+export {default as logo3} from './Home/logo3.png';
+export {default as logo4} from './Home/logo4.png';
+export {default as logo5} from './Home/logo5.png';
+export {default as logo6} from './Home/logo6.png';
+export {default as logo7} from './Home/logo7.png';
+export {default as logo8} from './Home/logo8.png';
+export {default as logo9} from './Home/logo9.png';
+export {default as logo10} from './Home/logo10.png';
+export {default as logo11} from './Home/logo11.png';
+export {default as logo12} from './Home/logo12.png';
+export {default as ExploreCars} from './Home/ExploreCars.jpg';
+export {default as InquiryPage} from './Home/InquiryPage.jpg';
+export {default as ContactPage} from './Home/ContactPage.jpg';
+export {default as How1} from './Home/How1.jfif';
+export {default as How2} from './Home/How2.webp';
+export {default as How3} from './Home/How3.avif';
+

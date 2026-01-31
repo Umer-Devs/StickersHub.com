@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, User, Mail, Phone, MessageSquare, Car, Euro } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+
 
 const InquiryForm = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +26,19 @@ const InquiryForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Inquiry submitted:', formData);
-        alert('Thank you for your inquiry! We will get back to you soon.');
+        toast.success('Thank you for your inquiry! We will get back to you soon.', {
+            duration: 5000,
+            position: 'top-right',
+        });
+        setFormData({
+            fullName: '',
+            email: '',
+            phone: '',
+            carInterest: '',
+            budget: '',
+            message: '',
+            agreement: false
+        });
     };
 
     return (
@@ -32,7 +46,7 @@ const InquiryForm = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-[2.5rem] shadow-2xl p-8 md:p-12 border border-gray-100"
+            className="bg-white rounded-lg shadow-2xl p-8 md:p-12 border border-gray-100"
         >
             <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -50,7 +64,7 @@ const InquiryForm = () => {
                                 value={formData.fullName}
                                 onChange={handleChange}
                                 placeholder="John Doe"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -69,7 +83,7 @@ const InquiryForm = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="john@example.com"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -88,7 +102,7 @@ const InquiryForm = () => {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 placeholder="+351 912 345 678"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -106,7 +120,7 @@ const InquiryForm = () => {
                                 value={formData.carInterest}
                                 onChange={handleChange}
                                 placeholder="e.g. BMW M4 2023"
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -123,7 +137,7 @@ const InquiryForm = () => {
                                 required
                                 value={formData.budget}
                                 onChange={handleChange}
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm"
                             >
                                 <option value="">Select Budget</option>
                                 <option value="10k-20k">10,000 € - 20,000 €</option>
@@ -147,7 +161,7 @@ const InquiryForm = () => {
                                 value={formData.message}
                                 onChange={handleChange}
                                 placeholder="Tell us more about what you're looking for..."
-                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm resize-none"
+                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all shadow-sm resize-none"
                             ></textarea>
                         </div>
                     </div>
@@ -172,7 +186,7 @@ const InquiryForm = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full py-5 bg-primary-blue hover:bg-theme-blue text-white rounded-2xl font-black text-lg tracking-widest shadow-xl shadow-primary-blue/20 transition-all active:scale-[0.98] uppercase flex items-center justify-center gap-3 group"
+                    className="w-full py-5 bg-primary-blue hover:bg-theme-blue text-white rounded-lg font-black text-lg tracking-widest shadow-xl shadow-primary-blue/20 transition-all active:scale-[0.98] uppercase flex items-center justify-center gap-3 group"
                 >
                     Submit Inquiry
                     <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />

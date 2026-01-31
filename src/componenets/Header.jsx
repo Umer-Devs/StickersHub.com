@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe, ChevronDown, Heart, ShoppingCart, User, Search } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [langDropdown, setLangDropdown] = useState(false);
+  const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
@@ -47,7 +48,7 @@ const Header = () => {
   const menuVariants = {
     closed: {
       opacity: 0,
-      x: '100%',
+      y: '-100%',
       transition: {
         type: 'spring',
         stiffness: 400,
@@ -58,7 +59,7 @@ const Header = () => {
     },
     open: {
       opacity: 1,
-      x: 0,
+      y: 0,
       transition: {
         type: 'spring',
         stiffness: 400,
@@ -77,64 +78,49 @@ const Header = () => {
   return (
     <nav
       className={` w-full z-[100] transition-all duration-500 ${isScrolled
-        ? 'bg-white/40 backdrop-blur-xl border-b border-gray-100 py-3 shadow-lg shadow-black/[0.03]'
+        ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 py-3 shadow-xl shadow-black/[0.05]'
         : 'bg-white py-6'
         }`}
     >
       <div className="custom-padding flex items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center gap-12">
+        <div className="flex-1 lg:flex-none">
           <Link to="/" className="group relative">
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-2xl font-black italic  text-primary-blue flex items-center"
+              className="text-2xl font-black italic text-primary-blue flex items-center"
             >
               CarZone Portugal
               <span className="text-primary-blue animate-pulse ml-2">.</span>
             </motion.div>
           </Link>
+        </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="relative group py-2"
-              >
-                <span className={`text-[15px] font-semibold transition-colors duration-300 ${location.pathname === link.path ? 'text-primary-blue' : 'text-primary-blue/80 hover:text-primary-blue'
-                  }`}>
-                  {link.name}
-                </span>
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary-blue transform transition-transform duration-300 origin-left ${location.pathname === link.path ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                  }`} />
-              </Link>
-            ))}
-          </div>
+        {/* Desktop Navigation Links - Centered */}
+        <div className="hidden lg:flex flex-1 justify-center items-center gap-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className="relative group py-2"
+            >
+              <span className={`text-[15px] font-semibold transition-colors duration-300 ${location.pathname === link.path ? 'text-primary-blue' : 'text-primary-blue/80 hover:text-primary-blue'
+                }`}>
+                {link.name}
+              </span>
+              <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary-blue transform transition-transform duration-300 origin-left ${location.pathname === link.path ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                }`} />
+            </Link>
+          ))}
         </div>
 
         {/* Desktop Right Actions */}
-        <div className="hidden lg:flex items-center gap-5">
-          <div className="flex items-center gap-1 border-r border-gray-200 pr-5 mr-2">
-            {[
-              { icon: Search, label: 'Search' },
-
-            ].map((item, idx) => (
-              <button
-                key={idx}
-                className="p-2.5 text-primary-blue/70 hover:text-primary-blue hover:bg-gray-100 rounded-full transition-all duration-300 group"
-                title={item.label}
-              >
-                <item.icon size={20} strokeWidth={2.2} />
-              </button>
-            ))}
-          </div>
-
+        <div className="hidden lg:flex flex-1 justify-end items-center gap-5">
           {/* Language Selector */}
           <div className="relative">
             <button
               onClick={() => setLangDropdown(!langDropdown)}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-200 transition-all duration-300 border border-transparent hover:border-gray-100"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-300 border border-transparent hover:border-gray-200"
             >
               <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center text-lg shadow-sm bg-white border border-gray-100">
                 {selectedLang.flag}
@@ -160,7 +146,7 @@ const Header = () => {
                     initial={{ opacity: 0, y: 15, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                    className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20 p-2"
+                    className="absolute right-0 mt-3 w-56 bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden z-20 p-2"
                   >
                     <div className="px-3 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Select Language</div>
                     {languages.map((lang) => (
@@ -170,7 +156,7 @@ const Header = () => {
                           setSelectedLang(lang);
                           setLangDropdown(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 ${selectedLang.code === lang.code ? 'bg-primary-blue/5 text-primary-blue' : 'hover:bg-gray-50 text-primary-blue'
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 ${selectedLang.code === lang.code ? 'bg-primary-blue/5 text-primary-blue' : 'hover:bg-gray-50 text-primary-blue'
                           }`}
                       >
                         <span className="flex items-center gap-3">
@@ -187,18 +173,13 @@ const Header = () => {
               )}
             </AnimatePresence>
           </div>
-
-
         </div>
 
         {/* Mobile Navbar Elements */}
         <div className="flex lg:hidden items-center gap-4">
-          <button className="p-2 text-primary-blue">
-            <Search size={24} />
-          </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`z-[110] p-2 rounded-xl transition-colors ${isOpen ? 'text-white' : 'text-primary-blue'}`}
+            className={`z-[110] p-2 rounded-lg transition-colors ${isOpen ? 'text-white' : 'text-primary-blue'}`}
           >
             {isOpen ? <X size={32} /> : <Menu size={32} />}
           </button>
@@ -213,16 +194,17 @@ const Header = () => {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 bg-primary-blue z-[105] flex flex-col lg:hidden"
+            className="fixed inset-0  bg-primary-blue z-[105] flex flex-col lg:hidden"
           >
-            <div className="flex-1 flex flex-col pt-8 px-8 sm:px-16 gap-10">
+            <div className="flex-1 flex flex-col pt-24 px-8 sm:px-16 gap-10 overflow-y-auto">
+              {/* Menu Links */}
               <div className="flex flex-col gap-6">
-                <motion.p variants={itemVariants} className="text-white/50 text-xs font-bold uppercase tracking-[0.2em]">Menu</motion.p>
+                <motion.p variants={itemVariants} className="text-white/50 text-xs font-bold uppercase tracking-[0.2em]">Navigation</motion.p>
                 {navLinks.map((link) => (
                   <motion.div key={link.name} variants={itemVariants}>
                     <Link
                       to={link.path}
-                      className="text-xl font-black text-white hover:text-gray-300 transition-colors flex items-center justify-between group"
+                      className="text-2xl font-black text-white hover:text-gray-300 transition-colors flex items-center justify-between group"
                     >
                       {link.name}
                       <motion.span
@@ -235,10 +217,58 @@ const Header = () => {
                 ))}
               </div>
 
+              {/* Mobile Language Selector */}
+              <motion.div variants={itemVariants} className="flex flex-col gap-4">
+                <p className="text-white/50 text-xs font-bold uppercase tracking-[0.2em]">Language</p>
+                <div className="relative">
+                  <button
+                    onClick={() => setMobileLangOpen(!mobileLangOpen)}
+                    className="w-full flex items-center justify-between p-4 bg-white/10 rounded-lg border border-white/10 text-white"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{selectedLang.flag}</span>
+                      <span className="font-bold">{selectedLang.name}</span>
+                    </div>
+                    <ChevronDown className={`transition-transform duration-300 ${mobileLangOpen ? 'rotate-180' : ''}`} />
+                  </button>
 
+                  <AnimatePresence>
+                    {mobileLangOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden mt-2 bg-white/5 rounded-lg border border-white/5"
+                      >
+                        {languages.map((lang) => (
+                          <button
+                            key={lang.code}
+                            onClick={() => {
+                              setSelectedLang(lang);
+                              setMobileLangOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-4 p-4 hover:bg-white/10 transition-colors text-left ${selectedLang.code === lang.code ? 'text-white' : 'text-white/60'}`}
+                          >
+                            <span className="text-2xl">{lang.flag}</span>
+                            <span className="font-bold">{lang.name}</span>
+                            {selectedLang.code === lang.code && (
+                              <div className="ml-auto w-2 h-2 rounded-full bg-white shadow-lg shadow-white/50" />
+                            )}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
 
-
-
+              {/* Bottom Decoration */}
+              {/* <motion.div
+                variants={itemVariants}
+                className="mt-auto pb-12 opacity-20 pointer-events-none"
+              >
+                <div className="text-6xl font-black italic text-white blur-sm">CarZone.</div>
+              </motion.div> */}
             </div>
           </motion.div>
         )}
@@ -248,3 +278,4 @@ const Header = () => {
 };
 
 export default Header;
+

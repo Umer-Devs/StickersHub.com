@@ -5,3 +5,8 @@ export { default as AdminCars } from './AdminCars'
 export { default as AdminLogin } from './AdminLogin'
 export { default as Inquiry } from './Inquiry';
 export { default as Contact } from './Contact';
+export { default as PrivacyPolicy } from './PrivacyPolicy';
+export { default as TermsOfService } from './TermsOfService';
+export { default as CookiePolicy } from './CookiePolicy';
+export { default as ReturnsPolicy } from './ReturnsPolicy';
+export { default as AdminCarForm } from './AdminCarForm';

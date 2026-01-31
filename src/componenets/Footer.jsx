@@ -82,31 +82,31 @@ const Footer = () => {
             <h4 className="text-lg font-black uppercase tracking-widest text-white/50">Contact Us</h4>
             <div className="space-y-6">
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
                   <Mail size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-gray-500 uppercase tracking-tighter mb-1">Email</p>
+                  <p className="text-xs font-black text-gray-500 uppercase   er mb-1">Email</p>
                   <p className="text-gray-300 font-bold">support@carzone.pt</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
                   <Phone size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-gray-500 uppercase tracking-tighter mb-1">Phone</p>
+                  <p className="text-xs font-black text-gray-500 uppercase   er mb-1">Phone</p>
                   <p className="text-gray-300 font-bold">+351 210 000 000</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-gray-500 uppercase tracking-tighter mb-1">Office</p>
+                  <p className="text-xs font-black text-gray-500 uppercase   er mb-1">Office</p>
                   <p className="text-gray-300 font-bold">Lisbon Tech District, Portugal</p>
                 </div>
               </div>
@@ -119,7 +119,7 @@ const Footer = () => {
           <p className="text-gray-500 font-bold text-sm">
             © {currentYear} CarZone Portugal. All rights reserved.
           </p>
-         
+
         </div>
       </div>
 
