@@ -238,18 +238,22 @@ const CarDetail = () => {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <button
-                                        disabled={!isAvailable}
-                                        className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-lg ${isAvailable
-                                            ? 'bg-black text-white hover:bg-gray-900 hover:shadow-xl hover:-translate-y-1'
-                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
-                                    >
-                                        {isAvailable ? <Phone size={16} /> : <AlertCircle size={16} />}
-                                        {isAvailable ? 'Contact Dealer' : 'Sold Out'}
-                                    </button>
-                                    <button className="w-full py-4 rounded-xl border-2 border-black text-black font-black uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-all">
-                                        Request Callback
-                                    </button>
+                                    <Link to="/inquiry" className="block w-full">
+                                        <button
+                                            disabled={!isAvailable}
+                                            className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-lg ${isAvailable
+                                                ? 'bg-black text-white hover:bg-gray-900 hover:shadow-xl hover:-translate-y-1'
+                                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+                                        >
+                                            {isAvailable ? <Phone size={16} /> : <AlertCircle size={16} />}
+                                            {isAvailable ? 'Contact Dealer' : 'Sold Out'}
+                                        </button>
+                                    </Link>
+                                    <Link to="/inquiry" className="block w-full">
+                                        <button className="w-full py-4 rounded-xl border-2 border-black text-black font-black uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-all">
+                                            Request Callback
+                                        </button>
+                                    </Link>
                                 </div>
                                 <div className="mt-6 pt-6 border-t border-gray-50 text-center">
                                     <p className="text-[10px] text-gray-400 font-medium">

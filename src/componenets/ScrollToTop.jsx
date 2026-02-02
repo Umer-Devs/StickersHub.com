@@ -4,22 +4,27 @@ import { useLocation } from 'react-router-dom';
 import { useLenis } from 'lenis/react';
 
 const ScrollToTop = () => {
-    const { pathname } = useLocation();
+    const location = useLocation();
+    const { pathname, state } = location;
     const lenis = useLenis();           // Lenis instance le lo
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+        // If state says scrollToResults, don't force top scroll here
+        // The target page will handle it
+        if (state?.scrollToResults) return;
+
         // Har route change pe top pe jao (smoothly)
         if (lenis) {
             lenis.scrollTo(0, { immediate: false, duration: 1 }); // smooth
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    }, [pathname, lenis]);
+    }, [pathname, lenis, state]);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 400) {       
+            if (window.scrollY > 400) {
                 setShow(true);
             } else {
                 setShow(false);

@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     const login = (email, password) => {
-        // Hardcoded credentials as requested
+       
         if (email === 'admin@gmail.com' && password === 'admin1234') {
             setIsAuthenticated(true);
             sessionStorage.setItem('admin_auth', 'true');

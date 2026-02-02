@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { logo1, logo10, logo11, logo12, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9 } from '../assets';
 
 const brands = [
@@ -7,17 +8,23 @@ const brands = [
     { name: "Peugeot", logo: logo10 },
     { name: "Dacia", logo: logo5 },
     { name: "Citroen", logo: logo3 },
-    { name: "Mercedes", logo: logo9 },
+    { name: "Mercedes-Benz", logo: logo9 },
     { name: "Audi", logo: logo1 },
     { name: "BMW", logo: logo2 },
     { name: "Ford", logo: logo4 },
     { name: "Chevrolet", logo: logo6 },
-    { name: "Toyota", logo: logo7 },
+    { name: "toyota", logo: logo7 },
     { name: "Honda", logo: logo8 },
     { name: "Volkswagen", logo: logo12 },
 ];
 
 const Category = () => {
+    const navigate = useNavigate();
+
+    const handleBrandClick = (brandName) => {
+        navigate(`/explore?make=${brandName}`, { state: { scrollToResults: true } });
+    };
+
     return (
         <section className="bg-gray-100">
             <div className="custom-padding  py-12 ">
@@ -46,10 +53,13 @@ const Category = () => {
                     {brands.map((brand, index) => (
                         <motion.div
                             key={brand.name}
+                            onClick={() => handleBrandClick(brand.name)}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             whileHover={{
-                               
+                                scale: 1.05,
+                                backgroundColor: "rgba(255, 255, 255, 1)",
+                                boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)"
                             }}
                             transition={{ duration: 0.3, delay: index * 0.05 }}
                             viewport={{ once: true }}
@@ -62,14 +72,12 @@ const Category = () => {
                                     className="max-w-full max-h-full transition-all duration-300"
                                 />
                             </div>
-                            {/* <span className="font-bold text-gray-700 group-hover:text-primary-blue transition-colors">
+                            <span className="font-bold text-gray-400 group-hover:text-primary-blue text-[10px] uppercase tracking-widest transition-colors">
                                 {brand.name}
-                            </span> */}
+                            </span>
                         </motion.div>
                     ))}
                 </div>
-
-               
             </div>
         </section>
     );

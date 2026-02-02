@@ -72,19 +72,20 @@ const HeroSection = () => {
         Object.entries(filters).forEach(([key, value]) => {
             if (value) queryParams.append(key, value);
         });
-        navigate(`/explore?${queryParams.toString()}`);
+        navigate(`/explore?${queryParams.toString()}`, { state: { scrollToResults: true } });
     };
 
-    const carMakes = ["Toyota", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Honda", "Ford", "Nissan", "Hyundai", "Kia", "Tesla", "Porsche", "Lexus", "Land Rover", "Volvo"];
-    // HeroSection had "Car Modal" mapped to years. I will keep it consistent with ExploreCar for now, but label it "Car Model (Year)" to match ExploreCar's label or just keep it "Car Model" but use years if that's what the system does.
-    // actually, let's look at the arrays.
-    const carModals = ["2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+    // Dynamic Filter Options from Data
+    const carMakes = useMemo(() => [...new Set(cars.map(car => car.make).filter(Boolean))].sort(), [cars]);
+    const carModels = useMemo(() => [...new Set(cars.map(car => car.model).filter(Boolean))].sort(), [cars]);
+    const fuelTypes = useMemo(() => [...new Set(cars.map(car => car.fuelType).filter(Boolean))].sort(), [cars]);
+    const transmissions = useMemo(() => [...new Set(cars.map(car => car.transmission).filter(Boolean))].sort(), [cars]);
+    const bodyTypes = useMemo(() => [...new Set(cars.map(car => car.bodyType).filter(Boolean))].sort(), [cars]);
+
+    // Static ranges
     const prices = [5000, 10000, 15000, 20000, 30000, 40000, 50000, 75000, 100000];
-    const years = Array.from({ length: 16 }, (_, i) => 2025 - i);
+    const years = Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - i);
     const mileages = [5000, 10000, 20000, 50000, 100000, 150000, 200000];
-    const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "LPG", "Hydrogen"];
-    const transmissions = ["Automatic", "Manual", "Semi-Automatic"];
-    const bodyTypes = ["Compact", "Convertible", "Coupe", "SUV", "Sedan", "Station Wagon", "Van", "Transporter"];
 
     return (
         <main
@@ -151,7 +152,7 @@ const HeroSection = () => {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Model (Year)</label>
+                                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Model</label>
                                 <div className="relative group">
                                     <select
                                         name="model"
@@ -160,7 +161,7 @@ const HeroSection = () => {
                                         className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-500/20 transition-all cursor-pointer shadow-sm"
                                     >
                                         <option value="">Any Model</option>
-                                        {carModals.map(year => <option key={year} value={year}>{year}</option>)}
+                                        {carModels.map(model => <option key={model} value={model}>{model}</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-[60%] -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-red-500" />
                                 </div>

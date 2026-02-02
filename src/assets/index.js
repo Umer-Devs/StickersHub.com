@@ -15,6 +15,6 @@ export {default as ExploreCars} from './Home/ExploreCars.jpg';
 export {default as InquiryPage} from './Home/InquiryPage.jpg';
 export {default as ContactPage} from './Home/ContactPage.jpg';
 export {default as How1} from './Home/How1.jfif';
-export {default as How2} from './Home/How2.webp';
-export {default as How3} from './Home/How3.avif';
+export {default as How2} from './Home/How2.svg';
+export {default as How3} from './Home/How3.svg';
 

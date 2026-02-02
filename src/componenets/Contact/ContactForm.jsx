@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, User, Mail, MessageSquare, Tag } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 
 const ContactForm = () => {
@@ -139,7 +140,7 @@ const ContactForm = () => {
                         className="w-5 h-5 rounded-lg border-2 border-gray-200 text-theme-blue focus:ring-theme-blue/20 transition-all cursor-pointer"
                     />
                     <label htmlFor="agreement-contact" className="text-sm font-medium text-gray-500 cursor-pointer">
-                        I agree to the <span className="text-primary-blue font-bold underline">Privacy Policy</span>.
+                        I agree to the <Link to={'/privacy'}><span className="text-primary-blue font-bold underline">Privacy Policy</span></Link>
                     </label>
                 </div>
 

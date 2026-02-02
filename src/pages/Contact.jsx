@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Header, Footer, ContactForm } from '../componenets';
 import { Mail, Phone, MapPin, Clock, MessageSquare, Globe, ArrowRight } from 'lucide-react';
@@ -118,10 +119,12 @@ const Contact = () => {
                                         </p>
                                     </div>
                                 </div>
-                                <button className="mt-10 flex items-center gap-3 font-black text-xs uppercase tracking-widest text-theme-blue hover:text-white transition-colors group">
-                                    Learn About Logistics
-                                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                </button>
+                                <Link to="/terms">
+                                    <button className="mt-10 flex items-center gap-3 font-black text-xs uppercase tracking-widest text-theme-blue hover:text-white transition-colors group">
+                                        Learn About Logistics
+                                        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                    </button>
+                                </Link>
                             </div>
                             <Globe className="absolute -bottom-10 -right-10 w-48 h-48 text-white/5" />
                         </motion.div>

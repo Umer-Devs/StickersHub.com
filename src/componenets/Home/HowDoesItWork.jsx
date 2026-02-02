@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { How1, How2, How3 } from '../../assets';
 
 const steps = [
@@ -7,19 +8,19 @@ const steps = [
         number: "01.",
         title: "Choose anywhere in Europe",
         description: "No more compromises! With us, you have an unrivaled selection of cars in one place.",
-        image: How1 
+        image: How1
     },
     {
         number: "02.",
         title: "We'll inspect the car closely",
         description: "A certified mechanic will thoroughly inspect your car. You will decide according to the result after.",
-        image: How2 
+        image: How2
     },
     {
         number: "03.",
         title: "We'll deliver it to your home",
         description: "We arrange all the paperwork, registration and delivery. All you need to do is enjoy your new car.",
-        image: How3 
+        image: How3
     }
 ];
 
@@ -86,9 +87,11 @@ const HowDoesItWork = () => {
                     viewport={{ once: true }}
                     className="mt-20 text-center"
                 >
-                    <button className="px-12 py-5 bg-[#2d3e9d] text-white font-black rounded-lg hover:bg-[#1a2b3b] transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20 text-lg uppercase tracking-wider">
-                        Want to know more?
-                    </button>
+                    <Link to="/contact">
+                        <button className="px-12 py-5 bg-[#2d3e9d] text-white font-black rounded-lg hover:bg-[#1a2b3b] transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20 text-lg uppercase tracking-wider">
+                            Want to know more?
+                        </button>
+                    </Link>
                 </motion.div>
             </div>
         </section>

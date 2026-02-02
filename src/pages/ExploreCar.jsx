@@ -5,13 +5,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCars } from '../context/CarContext';
 import { ExploreCars } from '../assets';
 import { useLocation } from 'react-router-dom';
+import { useLenis } from 'lenis/react';
 
 const ExploreCar = () => {
     const location = useLocation();
+    const lenis = useLenis();
 
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+        const timeout = setTimeout(() => {
+            if (location.state?.scrollToResults) {
+                // Scroll to results section (after hero)
+                if (lenis) {
+                    lenis.scrollTo(480, { duration: 1.2 });
+                } else {
+                    window.scrollTo({ top: 480, behavior: 'smooth' });
+                }
+            } else {
+                if (lenis) {
+                    lenis.scrollTo(0, { immediate: true });
+                } else {
+                    window.scrollTo(0, 0);
+                }
+            }
+        }, 100);
+
+        return () => clearTimeout(timeout);
+    }, [location, lenis]);
 
     const { cars: allCars, loading: contextLoading } = useCars();
 
@@ -55,14 +74,17 @@ const ExploreCar = () => {
     const itemsPerPage = 12;
 
 
-    const carMakes = ["Toyota", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Honda", "Ford", "Nissan", "Hyundai", "Kia", "Tesla", "Porsche", "Lexus", "Land Rover", "Volvo"];
-    const carModals = ["2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+    // Dynamic Filter Options from Data
+    const carMakes = useMemo(() => [...new Set(allCars.map(car => car.make).filter(Boolean))].sort(), [allCars]);
+    const carModels = useMemo(() => [...new Set(allCars.map(car => car.model).filter(Boolean))].sort(), [allCars]);
+    const fuelTypes = useMemo(() => [...new Set(allCars.map(car => car.fuelType).filter(Boolean))].sort(), [allCars]);
+    const transmissions = useMemo(() => [...new Set(allCars.map(car => car.transmission).filter(Boolean))].sort(), [allCars]);
+    const bodyTypes = useMemo(() => [...new Set(allCars.map(car => car.bodyType).filter(Boolean))].sort(), [allCars]);
+
+    // Static ranges
     const prices = [0, 5000, 10000, 15000, 20000, 30000, 40000, 50000, 75000, 100000, 200000, 500000];
-    const years = Array.from({ length: 26 }, (_, i) => 2026 - i);
+    const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() + 1 - i);
     const mileages = [0, 5000, 10000, 20000, 50000, 100000, 150000, 200000];
-    const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "LPG", "Hydrogen"];
-    const transmissions = ["Automatic", "Manual", "Semi-Automatic"];
-    const bodyTypes = ["Convertible", "Coupe", "Crossover", "Hatchback", "Minivan", "Pickup", "Sedan", "Sports Car", "Station Wagon", "SUV", "Transporter", "Van"];
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -94,19 +116,23 @@ const ExploreCar = () => {
         await new Promise(resolve => setTimeout(resolve, 800));
 
         const filtered = allCars.filter(car => {
+            const carPrice = parseInt(car.price);
+            const carYear = parseInt(car.year);
+            const carMileage = parseInt(car.mileage);
+
             return (
                 (filters.country === '' || car.country === filters.country) &&
                 (filters.make === '' || car.make === filters.make) &&
-                (filters.model === '' || car.year.toString() === filters.model) &&
+                (filters.model === '' || car.model === filters.model || car.year.toString() === filters.model) &&
                 (filters.fuelType === '' || car.fuelType === filters.fuelType) &&
                 (filters.transmission === '' || car.transmission === filters.transmission) &&
                 (filters.bodyType === '' || car.bodyType === filters.bodyType) &&
-                (filters.priceFrom === '' || car.price >= parseInt(filters.priceFrom)) &&
-                (filters.priceTo === '' || car.price <= parseInt(filters.priceTo)) &&
-                (filters.yearFrom === '' || car.year >= parseInt(filters.yearFrom)) &&
-                (filters.yearTo === '' || car.year <= parseInt(filters.yearTo)) &&
-                (filters.mileageFrom === '' || car.mileage >= parseInt(filters.mileageFrom)) &&
-                (filters.mileageTo === '' || car.mileage <= parseInt(filters.mileageTo))
+                (filters.priceFrom === '' || carPrice >= parseInt(filters.priceFrom)) &&
+                (filters.priceTo === '' || carPrice <= parseInt(filters.priceTo)) &&
+                (filters.yearFrom === '' || carYear >= parseInt(filters.yearFrom)) &&
+                (filters.yearTo === '' || carYear <= parseInt(filters.yearTo)) &&
+                (filters.mileageFrom === '' || carMileage >= parseInt(filters.mileageFrom)) &&
+                (filters.mileageTo === '' || carMileage <= parseInt(filters.mileageTo))
             );
         });
 
@@ -209,9 +235,9 @@ const ExploreCar = () => {
                                 </div>
                             </div>
 
-                            {/* Modal */}
+                            {/* Model */}
                             <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Model (Year)</label>
+                                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Car Model</label>
                                 <div className="relative group">
                                     <select
                                         name="model"
@@ -219,8 +245,8 @@ const ExploreCar = () => {
                                         onChange={handleFilterChange}
                                         className="w-full p-4 bg-gray-50 border border-transparent rounded-lg text-primary-blue font-bold appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-theme-blue/20 transition-all cursor-pointer shadow-sm"
                                     >
-                                        <option value="">Any Year</option>
-                                        {carModals.map(modal => <option key={modal} value={modal}>{modal}</option>)}
+                                        <option value="">Any Model</option>
+                                        {carModels.map(model => <option key={model} value={model}>{model}</option>)}
                                     </select>
                                     <ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-theme-blue" />
                                 </div>

@@ -32,9 +32,7 @@ export const CarProvider = ({ children }) => {
                 }
             });
 
-            // If we have filters, use a dedicated search endpoint or the index with params
-            // Assuming the index endpoint handles filtering or we add a new one. 
-            // For now, let's attach params to the standard index GET.
+           
             const response = await axios.get(`${API_BASE_URL}/cars`, { params: filters });
 
             // Normalize image data
@@ -68,6 +66,11 @@ export const CarProvider = ({ children }) => {
 
                 return {
                     ...car,
+                    // Normalize standard keys for frontend consistency
+                    fuelType: car.fuelType || car.fuel_type || 'N/A',
+                    bodyType: car.bodyType || car.body_type || 'N/A',
+                    transmission: car.transmission || car.transmission_type || 'N/A',
+                    isAvailable: car.isAvailable !== undefined ? car.isAvailable : !!car.is_available,
                     images: processedImages,
                     image: mainImage
                 };
